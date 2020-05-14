@@ -3,7 +3,7 @@ import actionlib
 import time
 import sys
 import actions.msg
-import rb_home_arm.msg
+# import rb_home_arm.msg
 # TODO: Import all the messages related to actions I guess ?
 '''
 All Goals, and Actions must be imported here from he corresponding packages
@@ -23,8 +23,8 @@ class Action(object):
         self.specific_function = {
             "bring_something": self.bring_something,
             "go_to": self.go_to,
-            "pick_up":self.pick_up,
-            "put_down":self.put_down,
+            # "pick_up":self.pick_up,
+            # "put_down":self.put_down,
             "default": self.specific_function_not_found,
         }
         self.specific_function.setdefault("default")
@@ -93,22 +93,22 @@ class Action(object):
         goal.target_location = "kitchen"
         self.action_client.send_goal(goal)
 
-    def pick_up(self):
-        print("Setting goal,filling it and contacting action server of pick_up")
-        ArmAction = rb_home_arm.msg.ArmAction
-        self.run_action_client(ArmAction)
-        print("Done initial contact with server")
-        goal = rb_home_arm.msg.ArmGoal()
-        goal.object = self.args
-        goal.type_of_movement = "pick_up"
-        self.action_client.send_goal(goal)
+    # def pick_up(self):
+    #     print("Setting goal,filling it and contacting action server of pick_up")
+    #     ArmAction = rb_home_arm.msg.ArmAction
+    #     self.run_action_client(ArmAction)
+    #     print("Done initial contact with server")
+    #     goal = rb_home_arm.msg.ArmGoal()
+    #     goal.object = self.args
+    #     goal.type_of_movement = "pick_up"
+    #     self.action_client.send_goal(goal)
     
-    def put_down(self):
-        print("Setting goal,filling it and contacting action server of put_down")
-        ArmAction = rb_home_arm.msg.ArmAction
-        self.run_action_client(ArmAction)
-        print("Done initial contact with server")
-        goal = rb_home_arm.msg.ArmGoal()
-        goal.object = self.args
-        goal.type_of_movement = "put_down"
-        self.action_client.send_goal(goal)
+    # def put_down(self):
+    #     print("Setting goal,filling it and contacting action server of put_down")
+    #     ArmAction = rb_home_arm.msg.ArmAction
+    #     self.run_action_client(ArmAction)
+    #     print("Done initial contact with server")
+    #     goal = rb_home_arm.msg.ArmGoal()
+    #     goal.object = self.args
+    #     goal.type_of_movement = "put_down"
+    #     self.action_client.send_goal(goal)

@@ -35,6 +35,7 @@ class navigationServer(object):
 
     def __init__(self, name):
         self._action_name = name
+        rospy.loginfo(name)
         # Initialize Navigation Action Server
         self._as = actionlib.SimpleActionServer(self._action_name, actions.msg.navServAction, execute_cb=self.execute_cb, auto_start = False)
         self._as.start()
@@ -43,13 +44,13 @@ class navigationServer(object):
         a = ['entrance', 'bedroom', 'kitchen', 'restroom', 'dinning_room']
         place = 0
         self.goals = {}
-        with open('src/navigation/actions/data/goals.csv', 'r') as file:
-        reader = csv.reader(file)
-        for row in reader:
-            goal = [float(i) for i in row]
-            self.goals[a[place]] = goal
-            place=(place+1)%len(a)
-        rospy.loginfo(self.goals)
+        with open('src/actions/data/goals.csv', 'r') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                goal = [float(i) for i in row]
+                self.goals[a[place]] = goal
+                place=(place+1)%len(a)
+            rospy.loginfo(self.goals)
 
     def validateGoal(self, goal):
         if(type(goal) != str):
@@ -63,20 +64,20 @@ class navigationServer(object):
       
     def execute_cb(self, goal):
         # Validate target location
+        rospy.loginfo("Goal received!")
         rospy.loginfo("Looking for the goal in the map...")
         goal_given = goal.target_location
-        isValid = validateGoal(goal_given)       
+        isValid = self.validateGoal(goal_given)       
         
         # Valid if the given location is in the known locations.
         if isValid == True:
             # Start executing the action
-            self._as.set_active(False)
-            send_goal(self.goals[goal_given])
+            self.send_goal(self.goals[goal_given])
         else:
             #Rejected goal
             self._result = False
             rospy.loginfo('%s: Aborted. Location not found' % self._action_name)
-            self._as.set_aborted(self._result)
+            self._as.set_aborted()
 
     def send_goal(self, goal_pose_given):
         #define a client for to send goal requests to the move_base server through a SimpleActionClient
@@ -113,12 +114,12 @@ class navigationServer(object):
         if(ac.get_state() ==  GoalStatus.SUCCEEDED):
             rospy.loginfo("You have reached the destination")
             self._result = True
-            self._as.set_succeeded(self._result)
+            self._as.set_succeeded()
             return True
         else:
             rospy.loginfo("The robot failed to reach the destination")
             self._result = False
-            self._as.set_aborted(self._result)
+            self._as.set_aborted()
             return False
 
 
