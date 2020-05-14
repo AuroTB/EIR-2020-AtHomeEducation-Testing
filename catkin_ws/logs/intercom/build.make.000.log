@@ -1,0 +1,38 @@
+[35m[1mScanning dependencies of target _intercom_generate_messages_check_deps_response[0m
+[35m[1mScanning dependencies of target _intercom_generate_messages_check_deps_action_selector_cmd[0m
+[35m[1mScanning dependencies of target std_msgs_generate_messages_py[0m
+[35m[1mScanning dependencies of target std_msgs_generate_messages_eus[0m
+[35m[1mScanning dependencies of target std_msgs_generate_messages_cpp[0m
+[35m[1mScanning dependencies of target std_msgs_generate_messages_lisp[0m
+[35m[1mScanning dependencies of target std_msgs_generate_messages_nodejs[0m
+[  0%] Built target std_msgs_generate_messages_py
+[  0%] Built target std_msgs_generate_messages_nodejs
+[  0%] Built target std_msgs_generate_messages_eus
+[  0%] Built target std_msgs_generate_messages_cpp
+[  0%] Built target std_msgs_generate_messages_lisp
+[  0%] Built target _intercom_generate_messages_check_deps_action_selector_cmd
+[  0%] Built target _intercom_generate_messages_check_deps_response
+[35m[1mScanning dependencies of target intercom_generate_messages_eus[0m
+[35m[1mScanning dependencies of target intercom_generate_messages_lisp[0m
+[35m[1mScanning dependencies of target intercom_generate_messages_nodejs[0m
+[35m[1mScanning dependencies of target intercom_generate_messages_py[0m
+[35m[1mScanning dependencies of target intercom_generate_messages_cpp[0m
+[  8%] [34m[1mGenerating Python from MSG intercom/response[0m
+[ 25%] [34m[1mGenerating Lisp code from intercom/response.msg[0m
+[ 25%] [34m[1mGenerating EusLisp code from intercom/action_selector_cmd.msg[0m
+[ 33%] [34m[1mGenerating Javascript code from intercom/action_selector_cmd.msg[0m
+[ 41%] [34m[1mGenerating EusLisp code from intercom/response.msg[0m
+[ 50%] [34m[1mGenerating C++ code from intercom/response.msg[0m
+[ 58%] [34m[1mGenerating Lisp code from intercom/action_selector_cmd.msg[0m
+[ 66%] [34m[1mGenerating Javascript code from intercom/response.msg[0m
+[ 75%] [34m[1mGenerating C++ code from intercom/action_selector_cmd.msg[0m
+[ 75%] Built target intercom_generate_messages_nodejs
+[ 83%] [34m[1mGenerating EusLisp manifest code for intercom[0m
+[ 91%] [34m[1mGenerating Python from MSG intercom/action_selector_cmd[0m
+[ 91%] Built target intercom_generate_messages_lisp
+[ 91%] Built target intercom_generate_messages_cpp
+[100%] [34m[1mGenerating Python msg __init__.py for intercom[0m
+[100%] Built target intercom_generate_messages_py
+[100%] Built target intercom_generate_messages_eus
+[35m[1mScanning dependencies of target intercom_generate_messages[0m
+[100%] Built target intercom_generate_messages
