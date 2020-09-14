@@ -21,7 +21,7 @@ def navigationClient():
     print("Nav server running...")
 
     # Creates a goal to send to the action server.
-    goal = actions.msg.navServGoal(target_location = "kitchen")
+    goal = actions.msg.navServGoal(target_location = "gt-kitchen")
 
     # Sends the goal to the action server.
     client.send_goal(goal)
