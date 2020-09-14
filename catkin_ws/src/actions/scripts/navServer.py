@@ -11,6 +11,8 @@ from actionlib_msgs.msg import *
 from geometry_msgs.msg import Point
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 
+from nav_actions.go_to import goToAction
+
 import actions.msg
 
 
@@ -39,18 +41,10 @@ class navigationServer(object):
         # Initialize Navigation Action Server
         self._as = actionlib.SimpleActionServer(self._action_name, actions.msg.navServAction, execute_cb=self.execute_cb, auto_start = False)
         self._as.start()
+        
+        go_to_action = goToAction()
+        self.goals = go_to_action.getGoals()
 
-        # declare the coordinates of interest
-        a = ['entrance', 'bedroom', 'kitchen', 'restroom', 'dinning_room']
-        place = 0
-        self.goals = {}
-        with open('src/actions/data/goals.csv', 'r') as file:
-            reader = csv.reader(file)
-            for row in reader:
-                goal = [float(i) for i in row]
-                self.goals[a[place]] = goal
-                place=(place+1)%len(a)
-            rospy.loginfo(self.goals)
 
     def validateGoal(self, goal):
         if(type(goal) != str):
@@ -61,7 +55,7 @@ class navigationServer(object):
             return True
         rospy.loginfo("Place not found in map :c")
         return False
-      
+    
     def execute_cb(self, goal):
         # Validate target location
         rospy.loginfo("Goal received!")
