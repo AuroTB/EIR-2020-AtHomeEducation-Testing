@@ -34,6 +34,8 @@ class navigationServer(object):
     _feedback = actions.msg.navServFeedback()
     _result = actions.msg.navServResult()
     _goToAction = goToAction()
+    _moveBaseStatus = ["PENDING","ACTIVE", "SUCCEDED","ABORTED"]
+
 
     def __init__(self, name):
         self._action_name = name
@@ -71,6 +73,19 @@ class navigationServer(object):
             self._result = False
             self._as.set_aborted()
 
+    def getMoveBaseStatus(self, data):
+        self.status = data.status_list[0].status
+
+        if (self.status < 2):
+            self._feedback.status = self._moveBaseStatus[self.status]
+        elif (self.status == 2 or self.status > 4):
+            self._feedback.status = self._moveBaseStatus[3]
+        else:
+            self._feedback.status = self._moveBaseStatus[self.status - 1]
+
+        self._as.publish_feedback(self._feedback)
+        
+        rospy.loginfo(rospy.get_caller_id() + " I heard %s", self._feedback.status)
 
     def send_goal(self, goal_pose_given):
         #define a client for to send goal requests to the move_base server through a SimpleActionClient
@@ -93,25 +108,20 @@ class navigationServer(object):
         rospy.loginfo("Sending goal location ...")
         ac.send_goal(goal)
 
-        ac.wait_for_result(rospy.Duration(120))
+        moveBaseStatusTopic = rospy.Subscriber("move_base/status", GoalStatusArray, self.getMoveBaseStatus)
 
-        #move_base_result = move_base_client.get_result() 
-        # while (move_base_result.result != 3 or move_base_result != 1):
-        #     if move_base_result.result == 1:
-        #         self._as.publish_feedback(self._feedback)
-        #     else:
-        #             self._result = False
-        #             self._as.publish_feedback(None)
-        #             self._as.set_succeeded(self._result)
+        ac.wait_for_result(rospy.Duration(120))
        
         if(ac.get_state() ==  GoalStatus.SUCCEEDED):
+            moveBaseStatusTopic.unregister()
             rospy.loginfo("You have reached the destination")
-            self._result = True
-            self._as.set_succeeded()
+            self._result.result = True
+            self._as.set_succeeded(self._result)
             return True
         else:
+            moveBaseStatusTopic.unregister()
             rospy.loginfo("The robot failed to reach the destination")
-            self._result = False
+            self._result.result = False
             self._as.set_aborted()
             return False
 
