@@ -33,7 +33,7 @@ class goToAction(object):
             rospy.loginfo(self.goals)
     
     def locationExists(self,location):
-        if(type(location) != str):
+        if type(location) != str:
             return False
         rospy.loginfo("Place received: %s", location)
         if location in self.goals:
