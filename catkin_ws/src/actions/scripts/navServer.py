@@ -16,7 +16,6 @@ from nav_actions.move_base import MoveBase
 
 import actions.msg
 
-
 """ 
 Valid states:
     PENDING
@@ -28,8 +27,6 @@ Valid Actions:
     so-Object
     ao-toDefine
 """
-
-
 class navigationServer(object):
     # Create messages that are used to publish feedback/result
     _feedback = actions.msg.navServFeedback()
@@ -47,16 +44,16 @@ class navigationServer(object):
         action = goal.target_location[0:2]
  
         if action == "gt":
-            goToAction = goToAction()
+            self.goToAction = goToAction()
             # Validate target location
             rospy.loginfo("Goal received!")
             rospy.loginfo("Looking for the goal in the map...")
             goal_given = goal.target_location[3:] 
             
             # Valid if the given location is in the known locations.
-            if goToAction.locationExists(goal_given) == True:
+            if self.goToAction.locationExists(goal_given) == True:
                 # Start executing the action
-                self.send_goal(goToAction.getLocation(goal_given))
+                self.send_goal(self.goToAction.getLocation(goal_given))
             else:
                 #Rejected goal
                 self._result = False
