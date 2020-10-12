@@ -6,4 +6,4 @@ bool result
 ---
 #feedback
 string status
-double travel
+float64 travel
