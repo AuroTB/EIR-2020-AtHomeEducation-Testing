@@ -11,8 +11,6 @@ from nav_actions.move_base import MoveBase
 
 class searchRoom(object):
     _goalPoints = {}
-    def init(self, location):
-        self.getGoalPoints(location)
 
     def getGoalPoints(self, location):
         ## TODO 

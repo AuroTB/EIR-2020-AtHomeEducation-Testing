@@ -50,6 +50,11 @@ class MoveBase(object):
 
     def getGoal(self):
         return self._goal
+    
+    def cancelGoal(self):
+        self._ac.cancel_all_goals()
+        rospy.loginfo('Goal Cancelled')
+        return True
 
     def sendGoalToNavStack(self):
         self._ac.send_goal(self.getGoal())

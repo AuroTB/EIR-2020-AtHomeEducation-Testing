@@ -13,7 +13,7 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 
 from nav_actions.go_to import goToAction
 from nav_actions.move_base import MoveBase
-from nav_actions,search_room import searchRoom
+from nav_actions.search_room import searchRoom
 
 import actions.msg
 
@@ -49,7 +49,7 @@ class navigationServer(object):
             rospy.loginfo("Goal received!")
             rospy.loginfo("Looking for the goal in the map...")
             goal_given = goal.target_location[3:] 
-            executeGoToAction(goal_given)
+            self.executeGoToAction(goal_given)
 
         elif action == "so":
             self.searchRoomAction = searchRoom()
@@ -59,12 +59,16 @@ class navigationServer(object):
             ## if room != actual:
             ##    executeGoToAction(room_to_search)
             ##    
-            executeSearchRoomAction(room_to_search)
+            self.executeSearchRoomAction(room_to_search)
 
             rospy.loginfo("Search Object Action")
 
         elif action == "ao":
             rospy.loginfo("Approach Object Action")
+
+        elif action == "cl":
+            currentAction = moveBase()
+            currentAction.cancelGoal()
             
         else:
             rospy.loginfo("Invalid Action")
@@ -72,12 +76,12 @@ class navigationServer(object):
             self._as.set_aborted()
     
     def executeGoToAction(self, location):
-          self.goToAction = goToAction()
+        self.goToAction = goToAction()
 
         # Valid if the given location is in the known locations.
-        if self.goToAction.locationExists(goal_given) == True:
+        if self.goToAction.locationExists(location) == True:
             # Start executing the action
-            self.send_goal(self.goToAction.getLocation(goal_given))
+            self.send_goal(self.goToAction.getLocation(location))
         else:
             #Rejected goal
             self._result = False
@@ -85,7 +89,12 @@ class navigationServer(object):
             self._as.set_aborted()
     
     def executeSearchRoomAction(self, room):
-        self.send_goal(searchRoom(room))
+        searchRoomAction = searchRoom()
+        goalPoints = searchRoomAction.getGoalPoints(room)
+
+        ## loop over all goal points until end of room or object found
+        ## for i in range(len(goalPoints)):
+            ## self.send_goal(i)
 
     # Sets the server's feedback based on the move base feedback
     def setServerFeedback(self, data):
