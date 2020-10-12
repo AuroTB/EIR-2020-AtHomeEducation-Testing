@@ -13,6 +13,7 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 
 from nav_actions.go_to import goToAction
 from nav_actions.move_base import MoveBase
+from nav_actions,search_room import searchRoom
 
 import actions.msg
 
@@ -44,23 +45,22 @@ class navigationServer(object):
         action = goal.target_location[0:2]
  
         if action == "gt":
-            self.goToAction = goToAction()
             # Validate target location
             rospy.loginfo("Goal received!")
             rospy.loginfo("Looking for the goal in the map...")
             goal_given = goal.target_location[3:] 
-            
-            # Valid if the given location is in the known locations.
-            if self.goToAction.locationExists(goal_given) == True:
-                # Start executing the action
-                self.send_goal(self.goToAction.getLocation(goal_given))
-            else:
-                #Rejected goal
-                self._result = False
-                rospy.loginfo('%s: Aborted. Location not found' % self._action_name)
-                self._as.set_aborted()
+            executeGoToAction(goal_given)
 
         elif action == "so":
+            self.searchRoomAction = searchRoom()
+            room_to_search = goal.target_location[3:]
+
+            ## TODO check first if the goal room is the actual room
+            ## if room != actual:
+            ##    executeGoToAction(room_to_search)
+            ##    
+            executeSearchRoomAction(room_to_search)
+
             rospy.loginfo("Search Object Action")
 
         elif action == "ao":
@@ -71,6 +71,22 @@ class navigationServer(object):
             self._result = False
             self._as.set_aborted()
     
+    def executeGoToAction(self, location):
+          self.goToAction = goToAction()
+
+        # Valid if the given location is in the known locations.
+        if self.goToAction.locationExists(goal_given) == True:
+            # Start executing the action
+            self.send_goal(self.goToAction.getLocation(goal_given))
+        else:
+            #Rejected goal
+            self._result = False
+            rospy.loginfo('%s: Aborted. Location not found' % self._action_name)
+            self._as.set_aborted()
+    
+    def executeSearchRoomAction(self, room):
+        self.send_goal(searchRoom(room))
+
     # Sets the server's feedback based on the move base feedback
     def setServerFeedback(self, data):
         self._feedback.status = self._goal.getMoveBaseStatus(data)
