@@ -24,7 +24,7 @@ class goToAction(object):
         a = ['entrance', 'bedroom', 'kitchen', 'restroom', 'dinning_room']
         place = 0
         self.goals = {}
-        with open('/home/ricardochapa/Desktop/RoBorregos/Roborregos-Navigation-Testing/catkin_ws/src/actions/data/goals.csv', 'r') as file:
+        with open('src/actions/data/goals.csv', 'r') as file:
             reader = csv.reader(file)
             for row in reader:
                 goal = [float(i) for i in row]
