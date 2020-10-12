@@ -4,6 +4,7 @@ from __future__ import print_function
 import csv
 import json
 from math import degrees, radians
+import tf
 
 import actionlib
 import rospy
@@ -98,13 +99,21 @@ class navigationServer(object):
 
     # Sets the server's feedback based on the move base feedback
     def setServerFeedback(self, data):
+        rospy.loginfo("list: %s", self.tf.getFrameStrings())
+
+        if self.tf.frameExists("/base_link") and self.tf.frameExists("/map"):
+            rospy.loginfo("true")
+            timeStamp = self.tf.getLatestCommonTime("/base_link", "/map")
+            currentPos, quat = self.tf.lookupTransform("/base_link", "/map", timeStamp)
+
         self._feedback.status = self._goal.getMoveBaseStatus(data)
         self._as.publish_feedback(self._feedback)
-
+    
     def send_goal(self, goal_pose_given):
         self._goal = MoveBase()
         self._goal.setGoal(goal_pose_given)
-
+        self.tf = tf.TransformListener(True, rospy.Duration(3.0))
+        
         # Create a topic listener of move_base node status
         moveBaseStatusTopic = rospy.Subscriber("move_base/status", GoalStatusArray, self.setServerFeedback)
         
