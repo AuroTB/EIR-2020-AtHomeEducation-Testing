@@ -53,7 +53,7 @@ class navigationServer(object):
             self.executeGoToAction(goal_given)
 
         elif action == "so":
-            self.searchRoomAction = searchRoom()
+            #self.searchRoomAction = searchRoom()
             room_to_search = goal.target_location[3:]
 
             ## TODO check first if the goal room is the actual room
@@ -62,7 +62,7 @@ class navigationServer(object):
             ##    
             self.executeSearchRoomAction(room_to_search)
 
-            rospy.loginfo("Search Object Action")
+            #rospy.loginfo("Search Object Action")
 
         elif action == "ao":
             rospy.loginfo("Approach Object Action")
@@ -82,7 +82,15 @@ class navigationServer(object):
         # Valid if the given location is in the known locations.
         if self.goToAction.locationExists(location) == True:
             # Start executing the action
-            self.send_goal(self.goToAction.getLocation(location))
+            actionResult = self.send_goal(self.goToAction.getLocation(location))
+            if actionResult:
+                rospy.loginfo("You have reached the destination")
+                self._result.result = True
+                self._as.set_succeeded(self._result)
+            else:
+                rospy.loginfo("The robot failed to reach the destination")
+                self._result.result = False
+                self._as.set_aborted()
         else:
             #Rejected goal
             self._result = False
@@ -91,25 +99,38 @@ class navigationServer(object):
     
     def executeSearchRoomAction(self, room):
         searchRoomAction = searchRoom()
-        goalPoints = searchRoomAction.getGoalPoints(room)
+        path = searchRoomAction.getGoalPoints(room)
 
+        for goalPoint in path:
+            result = self.send_goal(goalPoint)
+            if (not result):
+                rospy.loginfo("The robot failed to reach the destination")
+                self._result.result = False
+                self._as.set_aborted()
+                return
+            rospy.loginfo('Arrived to Goal Point')
+
+        rospy.loginfo("You have reached the destination")
+        self._result.result = True
+        self._as.set_succeeded(self._result)
         ## loop over all goal points until end of room or object found
         ## for i in range(len(goalPoints)):
             ## self.send_goal(i)
 
     # Sets the server's feedback based on the move base feedback
     def setServerFeedback(self, data):
-        rospy.loginfo("list: %s", self.tf.getFrameStrings())
+        #rospy.loginfo("list: %s", self.tf.getFrameStrings())
 
-        if self.tf.frameExists("/base_link") and self.tf.frameExists("/map"):
-            rospy.loginfo("true")
-            timeStamp = self.tf.getLatestCommonTime("/base_link", "/map")
-            currentPos, quat = self.tf.lookupTransform("/base_link", "/map", timeStamp)
+        #if self.tf.frameExists("/base_link") and self.tf.frameExists("/map"):
+         #   rospy.loginfo("true")
+          #  timeStamp = self.tf.getLatestCommonTime("/base_link", "/map")
+           # currentPos, quat = self.tf.lookupTransform("/base_link", "/map", timeStamp)
 
         self._feedback.status = self._goal.getMoveBaseStatus(data)
         self._as.publish_feedback(self._feedback)
     
     def send_goal(self, goal_pose_given):
+        rospy.loginfo(goal_pose_given)
         self._goal = MoveBase()
         self._goal.setGoal(goal_pose_given)
         self.tf = tf.TransformListener(True, rospy.Duration(3.0))
@@ -119,19 +140,9 @@ class navigationServer(object):
         
         rospy.loginfo("Sending goal location ...")
         moveBaseState = self._goal.sendGoalToNavStack()
-       
-        if moveBaseState:
-            moveBaseStatusTopic.unregister()
-            rospy.loginfo("You have reached the destination")
-            self._result.result = True
-            self._as.set_succeeded(self._result)
-            return True
-        else:
-            moveBaseStatusTopic.unregister()
-            rospy.loginfo("The robot failed to reach the destination")
-            self._result.result = False
-            self._as.set_aborted()
-            return False
+        moveBaseStatusTopic.unregister()
+
+        return moveBaseState
 
 
 if __name__ == '__main__':
