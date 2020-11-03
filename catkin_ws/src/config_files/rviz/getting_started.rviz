@@ -3,7 +3,9 @@ Panels:
     Help Height: 78
     Name: Displays
     Property Tree Widget:
-      Expanded: ~
+      Expanded:
+        - /Odometry1/Status1
+        - /PoseArray1
       Splitter Ratio: 0.5
     Tree Height: 407
   - Class: rviz/Selection
@@ -65,182 +67,12 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        head_link1:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        head_link2:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        kinect_link:
+        laser:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
         laser_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        laser_link_rear:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        left_arm_grip_center:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        left_arm_grip_left:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        left_arm_grip_right:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        left_arm_link0:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        left_arm_link1:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        left_arm_link2:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        left_arm_link3:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        left_arm_link4:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        left_arm_link5:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        left_arm_link6:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        left_arm_link7:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        right_arm_grip_center:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        right_arm_grip_left:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        right_arm_grip_right:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        right_arm_link0:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        right_arm_link1:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        right_arm_link2:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        right_arm_link3:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        right_arm_link4:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        right_arm_link5:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        right_arm_link6:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        right_arm_link7:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        shoulders_left_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        shoulders_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        shoulders_right_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        spine_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        waist_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        wheel_back:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        wheel_front:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        wheel_left:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        wheel_right:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -344,6 +176,56 @@ Visualization Manager:
       Topic: /move_base/DWAPlannerROS/global_plan
       Unreliable: false
       Value: true
+    - Angle Tolerance: 0.10000000149011612
+      Class: rviz/Odometry
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.30000001192092896
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: true
+      Enabled: true
+      Keep: 100
+      Name: Odometry
+      Position Tolerance: 0.10000000149011612
+      Shape:
+        Alpha: 1
+        Axes Length: 1
+        Axes Radius: 0.10000000149011612
+        Color: 255; 25; 0
+        Head Length: 0.30000001192092896
+        Head Radius: 0.10000000149011612
+        Shaft Length: 1
+        Shaft Radius: 0.05000000074505806
+        Value: Arrow
+      Topic: /odom
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Arrow Length: 0.30000001192092896
+      Axes Length: 0.30000001192092896
+      Axes Radius: 0.009999999776482582
+      Class: rviz/PoseArray
+      Color: 255; 25; 0
+      Enabled: true
+      Head Length: 0.07000000029802322
+      Head Radius: 0.029999999329447746
+      Name: PoseArray
+      Shaft Length: 0.23000000417232513
+      Shaft Radius: 0.009999999776482582
+      Shape: Arrow (Flat)
+      Topic: /particlecloud
+      Unreliable: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -372,25 +254,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 10.919761657714844
+      Distance: 6.837197303771973
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 4.946762561798096
-        Y: 2.690323829650879
-        Z: -0.394047349691391
+        X: 0.8919787406921387
+        Y: -0.04561328887939453
+        Z: 0.0005750656127929688
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.9853990077972412
+      Pitch: 0.8105072379112244
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.683553695678711
+      Yaw: 5.430272102355957
     Saved: ~
 Window Geometry:
   Displays:
