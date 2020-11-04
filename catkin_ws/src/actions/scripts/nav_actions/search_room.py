@@ -19,7 +19,7 @@ class searchRoom(object):
         ## Implement get_room_path
         ## self._path = get_room_path.getPoints(location)
         ## return get_room_path.generatePath(self._path)
-        with open('mock_path.csv', 'r') as file:
+        with open('goals.csv', 'r') as file:
             reader = csv.reader(file)
             for row in reader:
                 goal = [float(i) for i in row]
