@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(goal_visualizer)
+project(map_visualizer)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -107,7 +107,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES goal_visualizer
+#  LIBRARIES map_visualizer
 #  CATKIN_DEPENDS roscpp visualization_msgs
 #  DEPENDS system_lib
 )
@@ -137,8 +137,6 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 include_directories(include ${catkin_INCLUDE_DIRS})
-add_executable(goal_visualizer src/goal_visualizer.cpp)
-target_link_libraries(goal_visualizer ${catkin_LIBRARIES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -209,3 +207,8 @@ target_link_libraries(goal_visualizer ${catkin_LIBRARIES})
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+
+catkin_install_python(PROGRAMS scripts/map_tagger.py scripts/goal_display.py scripts/goal_saver.py scripts/map_display.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)

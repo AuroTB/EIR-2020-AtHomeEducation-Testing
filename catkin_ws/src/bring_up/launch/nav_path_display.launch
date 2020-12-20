@@ -39,7 +39,7 @@
         <param name="local_costmap/robot_base_frame" value="base_link"/>
         <param name="DWAPlannerROS/global_frame_id" value="odom"/>
     </node>
-    <node pkg="goal_visualizer" name="path_displayer" type="goal_display.py">
+    <node pkg="map_visualizer" name="path_displayer" type="goal_display.py">
     <param name="path_data" value= "$(find actions)/data/mock_path.csv"/>
     </node> 
 </launch>

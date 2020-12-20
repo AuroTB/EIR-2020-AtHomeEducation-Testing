@@ -23,7 +23,7 @@ def listener():
     # run simultaneously.
     rospy.init_node('goal_listener', anonymous=True)
 
-    rospy.Subscriber("amcl_pose", PoseWithCovarianceStamped, callback)
+    rospy.Subscriber("/move_base_simple/goal", PoseWithCovarianceStamped, callback)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
