@@ -9,6 +9,7 @@ from map_visualizer.msg import MapContext
 from map_visualizer.msg import Room
 from map_visualizer.msg import ObjInt
 from map import Map
+import os
 
 def callback(data):
     rospy.loginfo(rospy.get_caller_id() + "Pose given %s", data.pose.position)
@@ -93,5 +94,6 @@ if __name__ == '__main__':
     state_publisher.publish(state)
     map_obj = Map(map.name, map.rooms)
     print(map_obj.toJSON())
-    with open(str(map.name) + '.json', "w") as f:
+    cur_path = os.path.dirname(__file__)
+    with open(cur_path + "/../contextmaps/" + str(map.name) + '.json', "w") as f:
         f.write(map_obj.toJSON())
