@@ -86,6 +86,38 @@ def updateMarkers():
                 markerArray.markers.append(marker)
                 area_counter+=1
                 counter+=1
+            area_counter = 0
+            for obj in room.obj_int:
+                br.sendTransform((obj.obj_area[0].x, obj.obj_area[0].y, obj.obj_area[0].z),
+                                (0.0, 0.0, 0.0, 1.0),
+                                rospy.Time.now(),
+                                room.name + "-" + obj.name + "-" + str(area_counter),
+                                "/map")
+                marker = Marker()
+                marker.header.frame_id = room.name + "-" + obj.name + "-" + str(area_counter)
+                marker.header.stamp = rospy.Time.now()
+                marker.type = marker.CUBE
+                marker.action = marker.ADD
+                marker.ns = "map_goal_point"
+                marker.id = counter
+                marker.scale.x = 0.4
+                marker.scale.y = 0.4
+                marker.scale.z = 0.4
+                map_color = 0
+                if(room.name == marker_state.room):
+                    map_color = 1
+                marker.color.a = 1.0
+                marker.color.r = map_colors[map_color][0]
+                marker.color.g = map_colors[map_color][1]
+                marker.color.b = map_colors[map_color][2]
+                marker.pose.orientation.w = 1.0
+                marker.pose.position.x = 0.0
+                marker.pose.position.y = 0.0
+                marker.pose.position.z = 0.0
+                marker.lifetime = rospy.Duration.from_sec(0.1)
+                markerArray.markers.append(marker)
+                area_counter+=1
+                counter+=1
     # rospy.loginfo("Map updated")
 
 if __name__ == '__main__':

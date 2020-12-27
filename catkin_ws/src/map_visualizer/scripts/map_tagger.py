@@ -23,9 +23,10 @@ def callback(data):
                 if map.rooms[index].name == state.room:
                     map.rooms[index].area.append(data.pose.position)
         elif state.state == 2:
-            for index, obj in map.rooms[state.room].obj_int:
-                if obj.name == obj_name:
-                    map.rooms[state.room].obj_int[index].obj_area.append(data.pose.position)
+            map.rooms[-1].obj_int[-1].obj_area.append(data.pose.position)
+            # for index, obj in map.rooms[state.room].obj_int:
+            #     if obj.name == obj_name:
+            #         map.rooms[state.room].obj_int[index].obj_area.append(data.pose.position)
         map_publisher.publish(map)
     
 state = MapDisplayState()
@@ -81,7 +82,7 @@ if __name__ == '__main__':
                     state_publisher.publish(state)
                     obj = ObjInt()
                     obj.name = obj_name
-                    map.rooms[state.room_name].obj_int.append(obj)
+                    map.rooms[-1].obj_int.append(obj)
                     print("Please choose the enclosing perimeter area of the object")
                     print("Insert any key to stop")
                     x = raw_input()
@@ -108,7 +109,7 @@ if __name__ == '__main__':
         break
     state.state = -1
     state_publisher.publish(state)
-    map_obj = Map(map.name, map.rooms)
+    map_obj = Map(map=map)
     print(map_obj.toJSON())
     cur_path = os.path.dirname(__file__)
     with open(cur_path + "/../contextmaps/" + str(map.name) + '.json', "w") as f:
