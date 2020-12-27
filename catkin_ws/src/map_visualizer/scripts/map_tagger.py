@@ -49,46 +49,62 @@ if __name__ == '__main__':
     global state
     x = 1
     while not rospy.is_shutdown():
-        if x == 1:
-            x = raw_input("Give me the name of the map: ")
-            map.name = x
-            while True:
-                print("What do you want to do?")
-                print("1. Add a room")
-                print("2. Edit a room")
-                print("0. Exit")
-                x = input()
-                if x == 0:
-                    break
-                if x == 1:
-                    # x = raw_input('Give me the name of the room: ')
-                    room_name = str(raw_input('Give me the name of the room: '))
-                    state.state = 1
-                    state.room = room_name
+        x = raw_input("Give me the name of the map: ")
+        map.name = x
+        while True:
+            print("What do you want to do?")
+            print("1. Add a room")
+            print("2. Delete a room")
+            print("0. Exit")
+            x = input()
+            if x == 0:
+                break
+            if x == 1:
+                # x = raw_input('Give me the name of the room: ')
+                room_name = str(raw_input('Give me the name of the room: '))
+                state.state = 1
+                state.room = room_name
+                state_publisher.publish(state)
+                new_room = Room()
+                new_room.name = room_name
+                map.rooms.append(new_room)
+                # map.create_room(room_name)
+                print("Please choose the enclosing perimeter area of the room with the goal publisher")
+                print("Insert any key to stop")
+                x = raw_input()
+                print("Area saved.")
+                x = input("Save object of interest? (0 = no, 1 = Yes): ")
+                while(x):
+                    global obj_name
+                    obj_name = str(raw_input('Give me the name of the object: '))
+                    state.state = 2
                     state_publisher.publish(state)
-                    new_room = Room()
-                    new_room.name = room_name
-                    map.rooms.append(new_room)
-                    # map.create_room(room_name)
-                    print("Please choose the enclosing perimeter area of the room with the goal publisher")
+                    obj = ObjInt()
+                    obj.name = obj_name
+                    map.rooms[state.room_name].obj_int.append(obj)
+                    print("Please choose the enclosing perimeter area of the object")
                     print("Insert any key to stop")
                     x = raw_input()
-                    print("Area saved.")
-                    x = input("Save object of interest? (0 = no, 1 = Yes): ")
-                    while(x):
-                        global obj_name
-                        obj_name = str(raw_input('Give me the name of the object: '))
-                        state.state = 2
-                        state_publisher.publish(state)
-                        obj = ObjInt()
-                        obj.name = obj_name
-                        map.rooms[state.room_name].obj_int.append(obj)
-                        print("Please choose the enclosing perimeter area of the object")
-                        print("Insert any key to stop")
-                        x = raw_input()
-                        x = input("Save another object of interest? (0 = no, 1 = Yes): ")
-                    state.state = 0
-                    state_publisher.publish(state)
+                    x = input("Save another object of interest? (0 = no, 1 = Yes): ")
+                state.state = 0
+                state_publisher.publish(state)
+            elif x == 2:
+                state.state = 0
+                state_publisher.publish(state)
+                print("Which room do you want to delete?")
+                for index in range(len(map.rooms)):
+                    print(str(index+1) + ". " + map.rooms[index].name)
+                print("0. Exit")
+                x = input()
+                while x <= len(map.rooms) and x > 0:
+                    room_deleted = map.rooms.pop(x-1)
+                    map_publisher.publish(map)
+                    print("Room " + room_deleted.name + " deleted.")
+                    print("\nWhich room do you want to delete?")
+                    for index in range(len(map.rooms)):
+                        print(str(index+1) + ". " + map.rooms[index].name)
+                    print("0. Exit")
+                    x = input()
         break
     state.state = -1
     state_publisher.publish(state)

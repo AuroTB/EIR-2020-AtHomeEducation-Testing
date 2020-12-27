@@ -35,7 +35,7 @@ def changeState(data):
     global marker_state
     global marker_map
     marker_state = data
-    if marker_state.state == -1:
+    if marker_state.state == 0:
         #display all the map
         rospy.loginfo("Displaying the whole map by default")
         marker_state.room = ""
@@ -82,6 +82,7 @@ def updateMarkers():
                 marker.pose.position.x = 0.0
                 marker.pose.position.y = 0.0
                 marker.pose.position.z = 0.0
+                marker.lifetime = rospy.Duration.from_sec(0.1)
                 markerArray.markers.append(marker)
                 area_counter+=1
                 counter+=1
