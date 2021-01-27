@@ -1,0 +1,7 @@
+<launch>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find config_files)/rviz/nav_path_visualizer.rviz"/>
+    <node name="map_server" pkg="map_server" type="map_server" output="screen"
+            args="$(find config_files)/occupancy_grids/TMR_2019.yaml"/>
+    <!-- <node pkg="map_visualizer" name="map_tagger" type="map_tagger.py" output="screen" /> -->
+    <node pkg="map_visualizer" name="map_displayer" type="map_tagger_display.py" output="screen" />
+</launch>

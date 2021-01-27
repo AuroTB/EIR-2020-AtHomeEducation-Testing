@@ -1,0 +1,12 @@
+{
+    "name": "map1", 
+    "rooms": {
+        "kit": {
+            "area": [], 
+            "entrance": [], 
+            "name": "kit", 
+            "obj_int": {}, 
+            "path": []
+        }
+    }
+}

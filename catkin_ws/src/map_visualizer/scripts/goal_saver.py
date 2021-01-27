@@ -10,7 +10,7 @@ def callback(data):
     quaternionY = data.pose.pose.orientation.y
     quaternionZ = data.pose.pose.orientation.z
     quaternionW = data.pose.pose.orientation.w
-    f= open("goals.csv","a+")
+    f= open("mock_path.csv","a+")
     f.write("%f,%f,%f,%f,%f,%f\r\n" % (coordinateX, coordinateY, quaternionX, quaternionY, quaternionZ, quaternionW))
     f.close()
     
@@ -23,7 +23,7 @@ def listener():
     # run simultaneously.
     rospy.init_node('goal_listener', anonymous=True)
 
-    rospy.Subscriber("amcl_pose", PoseWithCovarianceStamped, callback)
+    rospy.Subscriber("/move_base_simple/goal", PoseWithCovarianceStamped, callback)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
